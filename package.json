@@ -7,9 +7,9 @@
   "version": "1.0.0",
   "main": "lib/index.js",
   "bin": {
-    "typescript-value-object-generator": "./lib/generateValueObjects.js"
+    "typescript-value-object-generator": "./lib/generator.js"
   },
-  "types": "lib/index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
