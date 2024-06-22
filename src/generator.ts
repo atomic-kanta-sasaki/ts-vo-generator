@@ -1,6 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Project, Type } from 'ts-morph';
+import * as readline from 'readline';
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 const generateValueObjectTemplate = (className: string, type: string) => `
 export class ${className} {
@@ -24,23 +30,37 @@ export class ${className} {
 }
 `;
 
-const createValueObjectFiles = (fields: { name: string; type: string }[], outputDir: string) => {
+const askUser = (question: string): Promise<string> => {
+    return new Promise((resolve) => {
+        rl.question(question, (answer) => {
+            resolve(answer);
+        });
+    });
+};
+
+const createValueObjectFiles = async (fields: { name: string; type: string }[], outputDir: string) => {
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
     }
 
-    fields.forEach(field => {
+    for (const field of fields) {
         const className = field.name.charAt(0).toUpperCase() + field.name.slice(1);
         const filePath = path.join(outputDir, `${className}.ts`);
 
         if (fs.existsSync(filePath)) {
-            console.log(`Skipping existing file: ${filePath}`);
-            return;
+            const answer = await askUser(`File ${filePath} already exists. Do you want to overwrite it? (y/n): `);
+            if (answer.toLowerCase() !== 'y') {
+                console.log(`Skipping file: ${filePath}`);
+                continue;
+            }
         }
 
         const fileContent = generateValueObjectTemplate(className, field.type);
         fs.writeFileSync(filePath, fileContent);
-    });
+        console.log(`Created file: ${filePath}`);
+    }
+
+    rl.close();
 };
 
 const getTypeScriptType = (type: Type): string => {
@@ -57,7 +77,7 @@ const getTypeScriptType = (type: Type): string => {
     return 'any';
 };
 
-export const generateValueObjectsFromClass = (filePath: string, outputDir: string) => {
+export const generateValueObjectsFromClass = async (filePath: string, outputDir: string): Promise<void> => {
     const project = new Project();
     const sourceFile = project.addSourceFileAtPath(filePath);
     const classDeclaration = sourceFile.getClass(() => true);
@@ -66,7 +86,7 @@ export const generateValueObjectsFromClass = (filePath: string, outputDir: strin
         throw new Error('No class found in the file');
     }
 
-    const params = classDeclaration.getConstructors()[0].getParameters()
+    const params = classDeclaration.getConstructors()[0].getParameters();
 
     const fields = params.map(property => {
         const name = property.getName();
@@ -74,7 +94,7 @@ export const generateValueObjectsFromClass = (filePath: string, outputDir: strin
         return { name, type: getTypeScriptType(type) };
     });
 
-    createValueObjectFiles(fields, outputDir);
+    await createValueObjectFiles(fields, outputDir);
 };
 
 // コマンドライン引数からファイルパスと出力ディレクトリを取得
