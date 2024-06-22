@@ -13,4 +13,10 @@ const [inputFile, outputDir] = args;
 const absoluteInputFile = path.resolve(inputFile);
 const absoluteOutputDir = path.resolve(outputDir);
 
-generateValueObjectsFromClass(absoluteInputFile, absoluteOutputDir);
+try {
+    generateValueObjectsFromClass(absoluteInputFile, absoluteOutputDir);
+    console.log('success');
+} catch (error) {
+    console.error('failed', error);
+    process.exit(1);
+}

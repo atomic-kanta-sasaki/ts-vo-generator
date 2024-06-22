@@ -31,8 +31,14 @@ const createValueObjectFiles = (fields: { name: string; type: string }[], output
 
     fields.forEach(field => {
         const className = field.name.charAt(0).toUpperCase() + field.name.slice(1);
-        const fileContent = generateValueObjectTemplate(className, field.type);
         const filePath = path.join(outputDir, `${className}.ts`);
+
+        if (fs.existsSync(filePath)) {
+            console.log(`Skipping existing file: ${filePath}`);
+            return;
+        }
+
+        const fileContent = generateValueObjectTemplate(className, field.type);
         fs.writeFileSync(filePath, fileContent);
     });
 };
