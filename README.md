@@ -19,7 +19,7 @@ yarn global add ts-vo-generator
 ### Command Line Usage
 To use `ts-vo-generator` from the command line, run the following command:
 ```bash
-ts-vo-generator <input_file> <output_directory>
+npx ts-vo-generator <input_file> <output_directory>
 ```
 
  - `<input_file>`: Path to the TypeScript file containing the class definitions from which you want to generate Value Objects.
@@ -28,7 +28,7 @@ ts-vo-generator <input_file> <output_directory>
 ### Example
 Here's an example command to generate Value Objects from `User.ts` and output them to the `ValueObjects` directory:
 ```bash
-ts-vo-generator ./src/models/User.ts ./src/ValueObjects
+npx ts-vo-generator ./src/models/User.ts ./src/ValueObjects
 ```
 
 ## Contributing
