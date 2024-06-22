@@ -7,11 +7,19 @@ export class ${className} {
     private constructor(private readonly value: ${type}) {}
 
     static create(value: ${type}): ${className} {
+        if (!${className}.isValid(value)) {
+            throw new Error('Invalid value');
+        }
         return new ${className}(value);
     }
 
     getValue(): ${type} {
         return this.value;
+    }
+
+    private static isValid(value: ${type}): boolean {
+        // validation logic here
+        return true;
     }
 }
 `;
@@ -26,7 +34,6 @@ const createValueObjectFiles = (fields: { name: string; type: string }[], output
         const fileContent = generateValueObjectTemplate(className, field.type);
         const filePath = path.join(outputDir, `${className}.ts`);
         fs.writeFileSync(filePath, fileContent);
-        console.log(`${filePath} has been created.`);
     });
 };
 
@@ -58,7 +65,6 @@ export const generateValueObjectsFromClass = (filePath: string, outputDir: strin
     const fields = params.map(property => {
         const name = property.getName();
         const type = property.getType();
-        console.log(name, type)
         return { name, type: getTypeScriptType(type) };
     });
 
