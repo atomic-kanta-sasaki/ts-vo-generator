@@ -3,20 +3,20 @@
     "ts-morph": "^22.0.0",
     "typescript": "^5.5.2"
   },
-  "name": "typescript-value-object-generator",
+  "name": "ts-vo-generator",
   "version": "1.0.0",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "bin": {
-    "typescript-value-object-generator": "./lib/generator.js"
+    "ts-vo-generator": "dist/index.js"
   },
   "types": "index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "tsc"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Kanta Sasaki",
+  "license": "MIT",
   "description": "",
   "devDependencies": {
     "@types/node": "^20.14.7"
