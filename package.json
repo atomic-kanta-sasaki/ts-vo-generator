@@ -4,7 +4,7 @@
     "typescript": "^5.5.2"
   },
   "name": "ts-vo-generator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/index.js",
   "bin": {
     "ts-vo-generator": "dist/index.js"
