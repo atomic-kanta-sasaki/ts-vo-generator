@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "ts-morph": "^22.0.0",
+    "typescript": "^5.5.2"
+  },
+  "name": "typescript-value-object-generator",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "bin": {
+    "typescript-value-object-generator": "./lib/generateValueObjects.js"
+  },
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^20.14.7"
+  }
+}

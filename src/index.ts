@@ -1,0 +1,1 @@
+export { generateValueObjectsFromClass } from './generator';
