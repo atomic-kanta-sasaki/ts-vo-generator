@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  WORKING_DIRECTORY: application
+  WORKING_DIRECTORY: ./
 
 jobs:
   Test:
