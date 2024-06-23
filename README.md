@@ -24,6 +24,8 @@ npx ts-vo-generator <input_file> <output_directory>
 
  - `<input_file>`: Path to the TypeScript file containing the class definitions from which you want to generate Value Objects.
  - `<output_directory>`: Path to the directory where the generated Value Objects will be output.
+ - 
+If a Value Object already exists in the output directory, the tool will prompt you to either overwrite the existing file or skip the operation.
 
 ### Example
 Here's an example command to generate Value Objects from `User.ts` and output them to the `ValueObjects` directory:
