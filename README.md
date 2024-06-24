@@ -1,5 +1,4 @@
 # ts-vo-generator
-![image](https://github.com/atomic-kanta-sasaki/typescript-value-object-generator/assets/49396455/6787b715-d6ac-4040-b7c0-3e6483add91f)
 
 `ts-vo-generator` is a tool to generate TypeScript Value Objects from classes. This tool allows you to easily create immutable data structures in TypeScript by generating Value Objects based on constructor arguments.
 
