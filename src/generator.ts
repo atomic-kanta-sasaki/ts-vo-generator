@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Project, Type } from 'ts-morph';
 import * as readline from 'readline';
-
+import { TypeChecker } from './typeChecker';
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -63,20 +63,6 @@ const createValueObjectFiles = async (fields: { name: string; type: string }[], 
     rl.close();
 };
 
-const getTypeScriptType = (type: Type): string => {
-    if (type.isString()) {
-        return 'string';
-    }
-    if (type.isNumber()) {
-        return 'number';
-    }
-    if (type.isBoolean()) {
-        return 'boolean';
-    }
-    // Add other type mappings as needed
-    return 'any';
-};
-
 export const generateValueObjectsFromClass = async (filePath: string, outputDir: string): Promise<void> => {
     const project = new Project();
     const sourceFile = project.addSourceFileAtPath(filePath);
@@ -87,11 +73,10 @@ export const generateValueObjectsFromClass = async (filePath: string, outputDir:
     }
 
     const params = classDeclaration.getConstructors()[0].getParameters();
-
     const fields = params.map(property => {
+        const typeChecker = TypeChecker.new(property.getType());
         const name = property.getName();
-        const type = property.getType();
-        return { name, type: getTypeScriptType(type) };
+        return { name, type: typeChecker.getTypeScriptType() };
     });
 
     await createValueObjectFiles(fields, outputDir);
