@@ -1,8 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { Project, Type } from 'ts-morph';
+import { Project } from 'ts-morph';
 import * as readline from 'readline';
 import { TypeChecker } from './typeChecker';
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout

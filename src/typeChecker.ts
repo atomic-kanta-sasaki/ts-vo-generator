@@ -1,68 +1,48 @@
+import { Type } from 'ts-morph';
+
 export class TypeChecker {
-    constructor(private value: any) {}
+    private readonly type: Type;
 
-    isString(): boolean {
-        return typeof this.value === 'string';
+    private constructor(type: Type) {
+        this.type = type;
     }
 
-    isNumber(): boolean {
-        return typeof this.value === 'number';
+    static new(type: Type): TypeChecker {
+        return new TypeChecker(type);
     }
-
-    isBoolean(): boolean {
-        return typeof this.value === 'boolean';
-    }
-
-    isDate(): boolean {
-        return this.value instanceof Date;
-    }
-
-    isArray(): boolean {
-        return Array.isArray(this.value);
-    }
-
-    isObject(): boolean {
-        return this.value !== null && typeof this.value === 'object' && !Array.isArray(this.value) && !(this.value instanceof Date);
-    }
-
-    isBuffer(): boolean {
-        return Buffer.isBuffer(this.value);
-    }
-
-    isFile(): boolean {
-        return this.value instanceof File;
-    }
-
 
     getTypeScriptType(): string {
-        if (this.value.isString()) {
+        if (this.type.isString()) {
             return 'string';
-        }
-        if (this.value.isNumber()) {
+        } else if (this.type.isNumber()) {
             return 'number';
-        }
-        if (this.value.isBoolean()) {
+        } else if (this.type.isBoolean()) {
             return 'boolean';
+        } else if (this.type.isArray()) {
+            const elementType = this.type.getArrayElementTypeOrThrow();
+            return `${this.getTypeScriptTypeFromElement(elementType)}[]`;
+        } else if (this.type.isClassOrInterface() || this.type.isObject()) {
+            return 'object';
+        } else if (this.type.isUndefined()) {
+            return 'undefined';
+        } else if (this.type.isNull()) {
+            return 'null';
+        } else if (this.type.isEnum() || this.type.isEnumLiteral()) {
+            return 'enum';
+        } else {
+            return 'any';
         }
-        if (this.value.isDate()) {
-            return 'Date';
-        }
-        if (this.value.isArray()) {
-            return 'Array';
-        }
-        if (this.value.isObject()) {
-            return 'Object';
-        }
-        if (this.value.isBuffer()) {
-            return 'Buffer';
-        }
-        if (this.value.isFile()) {
-            return 'File';
-        }
-        return 'any';
     }
 
-    static new(value: any): TypeChecker {
-        return new TypeChecker(value);
+    private getTypeScriptTypeFromElement(type: Type): string {
+        if (type.isString()) {
+            return 'string';
+        } else if (type.isNumber()) {
+            return 'number';
+        } else if (type.isBoolean()) {
+            return 'boolean';
+        } else {
+            return 'unknown';
+        }
     }
 }
